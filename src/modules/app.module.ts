@@ -10,10 +10,11 @@ import { TaskHistory } from 'src/models/db/task-history';
 import { FeatureModule } from './feature.module';
 import { ProjectTaskModule } from './project-task.module';
 import { ProjectModule } from './project.module';
+import { TaskPointConfig } from 'src/models/db/task-point-config';
 //MongooseModule.forRoot('mongodb://<username>:<password>@localhost:27017',{dbName: 'studentdb'})
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017',{dbName: 'Ticketing'}),
+    MongooseModule.forRoot('mongodb://localhost:27017',{dbName: 'TestFeed'}),
     ConfigModule.forRoot({
       envFilePath: `.env.${process.env.NODE_ENV}`,
       isGlobal: true,
@@ -26,7 +27,8 @@ import { ProjectModule } from './project.module';
     TaskHistory,
     FeatureModule,
     ProjectTaskModule,
-    ProjectModule
+    ProjectModule,
+    TaskPointConfig
   ],
   controllers: [
   ],
