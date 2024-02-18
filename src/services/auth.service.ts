@@ -28,11 +28,11 @@ export class AuthService  {
    var user= await this.servive.getOne({mailAddress:data.username,password:data.password})
    if(!user)
     throw new AppException('user not found');
-    user.token=await this.jwtService.signAsync({mailAddress:user.mailAddress,tenant:user.tenant,_id:user._id.toString()});
+    user.token=await this.jwtService.signAsync({mailAddress:user.mailAddress,_id:user._id.toString()});
     return user;  
  }
  async saveUser(data:User[]){
-   var user= await this.servive.save(data);
+   var user= await this.servive.saveMany(data);
    return user; 
 }
 }

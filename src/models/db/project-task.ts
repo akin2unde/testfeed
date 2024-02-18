@@ -10,7 +10,7 @@ import { Task, TaskSchema } from "./Task";
 @Schema({collection:'ProjectTask',timestamps:true
 })
 export class ProjectTask extends BaseEntity<ProjectTask>  {
-   @Prop({isRequired:true, type:[{type: mongoose.Schema.Types.ObjectId,ref:Task}],default:[]})
+   @Prop({isRequired:true, type:[{type: mongoose.Schema.Types.ObjectId,ref:()=>Task}],default:[]})
    tasks: Task[];
    @Prop({isRequired:true})
    createdBy: string;
