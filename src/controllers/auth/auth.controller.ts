@@ -14,7 +14,6 @@ export class AuthController {
     @Get('test')
     async test(@Res() response): Promise<void> {
     try {
-        const port =this.configService.get<string>('PORT');
        const result=await this.service.getAll();
       return response.status(HttpStatus.OK).json(result);
      } catch (err) {

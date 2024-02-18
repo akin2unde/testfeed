@@ -1,9 +1,10 @@
 import { Controller, Get, HttpStatus, Res } from '@nestjs/common';
 import { ProjectService } from 'src/services/project.service';
+import { TaskHistoryService } from 'src/services/task-history.service';
 
 @Controller('task-history')
 export class TaskHistoryController {
-    constructor(private service:ProjectService) {
+    constructor(private service:TaskHistoryService) {
         
     }
     @Get('test')

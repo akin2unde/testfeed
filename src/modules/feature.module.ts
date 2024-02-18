@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { FeatureController } from 'src/controllers/feature/feature.controller';
 import { Feature, FeatureSchema } from 'src/models/db/feature';
 import { FeatureService } from 'src/services/feature.service';
 @Module({
@@ -8,6 +9,9 @@ import { FeatureService } from 'src/services/feature.service';
   ],
   providers: [
     FeatureService
+  ],
+  controllers: [
+    FeatureController
   ],
   exports:[FeatureService]
 })
