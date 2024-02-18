@@ -1,4 +1,6 @@
-import { Controller, Get, HttpStatus, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Task } from 'src/models/db/Task';
+import { ProjectTask } from 'src/models/db/project-task';
 import { ProjectTaskService } from 'src/services/project-task.service';
 
 @Controller('project-task')
@@ -14,4 +16,13 @@ export class ProjectTaskController {
       return response.status(err.status).json(err.response);
      }
     } 
+    @Post('save')
+    async saveUser(@Body() data: ProjectTask): Promise<ProjectTask> {
+    try {
+        var result= await this.service.preSave(data)
+        return result[0];
+     } catch (err) {
+        throw err;
+     }
+    }
 }

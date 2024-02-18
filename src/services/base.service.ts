@@ -26,7 +26,7 @@ export abstract class BaseService<T> {
   async getOneById(id:string,projection:string|Record<string,unknown>={},options:Record<string,unknown>={}):Promise<T>{
     return await this.entity.findById(id);
   }
-  async save(data:T[])
+  private async save(data:T[])
   {
     const newObjs=(data as any[]).filter(_=>_.state== ObjectState.new || !_.state);
     const updateObjs=(data as any[]).filter(_=>_.state && _.state== ObjectState.changed);

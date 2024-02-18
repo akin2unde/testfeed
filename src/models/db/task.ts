@@ -7,6 +7,7 @@ import { Status } from "./status";
 import { ProjectType } from "./project-type";
 import { TaskType } from "./task-type";
 import { TaskNotification } from "./task-notification";
+import { TaskStatus } from "./task-status";
 
 @Schema({collection:'Task',timestamps:true
 })
@@ -25,6 +26,8 @@ export class Task extends BaseEntity<Task>  {
    createdBy:string
    @Prop({default:ProjectType.frontend, enum:ProjectType,type:String})
    projectType: string;
+   @Prop({default:TaskStatus.pending, enum:TaskStatus,type:String})
+   currentStatus: TaskStatus;
    @Prop()
    @IsEmail()
    closeBy:string;

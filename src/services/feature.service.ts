@@ -14,4 +14,5 @@ export class FeatureService extends BaseService<Feature> {
  {
   super(_entity,_store);
  }
+
 }
