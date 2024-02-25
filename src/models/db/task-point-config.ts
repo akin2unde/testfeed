@@ -5,7 +5,7 @@ import { Document } from "mongoose";
 import { Exclude, plainToInstance } from "class-transformer";
 import { Status } from "./status";
 
-@Schema({collection:'TaskPointConfig',timestamps:true
+@Schema({collection:'TaskPointConfig',timestamps:true,_id:false
 })
 export class TaskPointConfig extends BaseEntity<TaskPointConfig>  {
    @Prop({isRequired:true,default:1})
@@ -27,4 +27,4 @@ export class TaskPointConfig extends BaseEntity<TaskPointConfig>  {
 export type TaskPointConfigDocument = TaskPointConfig & Document;
 export const TaskPointConfigSchema = SchemaFactory.createForClass(TaskPointConfig);
 TaskPointConfigSchema.index({position: '2dsphere' });
-TaskPointConfigSchema.index({ '$**': 'text' });
+TaskPointConfigSchema.index({ '$**': 'text',code: 1 }, { unique: true  });

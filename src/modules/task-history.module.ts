@@ -5,7 +5,7 @@ import { TaskHistory, TaskHistorySchema } from 'src/models/db/task-history';
 import { TaskHistoryService } from 'src/services/task-history.service';
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: TaskHistory.name, schema: TaskHistorySchema }])
+    MongooseModule.forFeature([{ name:  'TaskHistory', schema: TaskHistorySchema }])
   ],
   providers: [
     TaskHistoryService

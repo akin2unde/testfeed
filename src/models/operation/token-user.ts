@@ -4,13 +4,12 @@ import { Injectable } from "@nestjs/common";
 export class TokenUser{
  mailAddress:string;
  tenant:string;
- _id:string
+ code:string
  /**
   *
   */
- constructor(_mail:string,_tenant:string,_id:string) {
-    this.tenant=_tenant;
+ constructor(_mail:string,code:string) {
     this.mailAddress= _mail;
-    this._id=_id;
+    this.code=code;
  }
 }

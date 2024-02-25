@@ -8,7 +8,7 @@ import { User } from 'src/models/db/user';
 
 @Injectable()
 export class ProjectService extends BaseService<Project> {
- constructor(@InjectModel(Project.name) readonly _entity:Model<Project>,private readonly _store: AsyncLocalStorage<User>) 
+ constructor(@InjectModel('Project') readonly _entity:Model<Project>,private readonly _store: AsyncLocalStorage<User>) 
  {
   super(_entity,_store);
  }

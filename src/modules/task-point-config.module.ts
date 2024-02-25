@@ -4,7 +4,7 @@ import { TaskPointConfig, TaskPointConfigSchema } from 'src/models/db/task-point
 import { TaskPointConfigService } from 'src/services/task-point-config.service';
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: TaskPointConfig.name, schema: TaskPointConfigSchema }])
+    MongooseModule.forFeature([{ name: 'TaskPointConfig', schema: TaskPointConfigSchema }])
   ],
   providers: [
     TaskPointConfigService

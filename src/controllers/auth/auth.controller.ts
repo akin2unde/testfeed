@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { ArgumentMetadata, Body, Controller, Get, HttpStatus, Post, Res, UsePipes } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import envConfig from 'src/environment/env-config';
-import { User } from 'src/models/db/user';
+import { User, UserDTO } from 'src/models/db/user';
 import { LoginParam } from 'src/models/operation/login-param';
+import { ModelValidation } from 'src/pipes/model-validation';
 import { AuthService } from 'src/services/auth.service';
 
 @Controller('auth')
@@ -30,7 +31,8 @@ export class AuthController {
      }
     }
     @Post('saveUser')
-    async saveUser(@Body() data: User[]): Promise<User[]> {
+    @UsePipes(new ModelValidation(UserDTO))
+    async saveUser(@Body() data: UserDTO[]): Promise<UserDTO[]> {
     try {
         var result= await this.service.saveUser(data)
       return result;
@@ -38,5 +40,4 @@ export class AuthController {
         throw err;
      }
     }
-  
 }

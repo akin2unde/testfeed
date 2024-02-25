@@ -6,7 +6,7 @@ import { TaskHistoryModule } from './task-history.module';
 import { TaskController } from 'src/controllers/task/task.controller';
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Task.name, schema: TaskSchema }]),
+    MongooseModule.forFeature([{ name: 'Task', schema: TaskSchema, }]),
     TaskHistoryModule
   ],
   providers: [

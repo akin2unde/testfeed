@@ -5,7 +5,7 @@ import { Feature, FeatureSchema } from 'src/models/db/feature';
 import { FeatureService } from 'src/services/feature.service';
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Feature.name, schema: FeatureSchema }])
+    MongooseModule.forFeature([{ name:'Feature', schema: FeatureSchema }])
   ],
   providers: [
     FeatureService

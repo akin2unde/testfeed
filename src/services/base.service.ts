@@ -1,6 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { HttpCode, HttpException, Injectable } from '@nestjs/common';
+import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { AsyncLocalStorage } from 'async_hooks';
+import {  } from 'class-transformer';
 import { Document, FilterQuery, Model } from 'mongoose';
+import { ErrorHandler } from 'src/middleware/error';
 import { BaseEntity } from 'src/models/db/base-model';
 import { User } from 'src/models/db/user';
 import { ObjectState } from 'src/models/operation/object-state';
@@ -10,15 +13,19 @@ export abstract class BaseService<T> {
   /**
    *
    */
-  activeUser:User;
+  private activeUser:User;
   constructor(private readonly entity:Model<T>,  private readonly store: AsyncLocalStorage<User>) 
   {
-    this.activeUser= store?store.getStore()?.toObject():null;
+    
   }
   /**
    *
    */
- 
+  getActiveUser()
+  {
+    this.activeUser= this.store?this.store.getStore():null;
+    return this.activeUser
+  }
 
   async getOne(conditions:Partial<Record<keyof T,unknown>>,projection:string|Record<string,unknown>={},options:Record<string,unknown>={}):Promise<T>{
     return await this.entity.findOne(conditions as FilterQuery<T>,projection,options);
@@ -40,8 +47,27 @@ export abstract class BaseService<T> {
     return res.map((m:any)=>{m.state=ObjectState.unchanged; return  m.toObject()});
   }
 
-  async saveMany(data:T[]):Promise<T[]>{
+  async saveMany(data:T[]):Promise<T[]>
+  {
+    this.setCode(data);
+    try{
     return await this.entity.insertMany(data);
+    }
+    catch(err)
+    {
+       throw new HttpException(err,500)
+    }
+  }
+  setCode(data:T[])
+  {
+    data.forEach(f=>{
+      (f as any).code=`${(f as any).codePrefix}-${this.generate6DigitCode()}`;
+      // console.log(T['codePrefix']);
+    });
+  }
+  generate6DigitCode()
+  {
+   return Math.floor(1000000000 + Math.random() * 9000000000);
   }
   async updateMany(data:T[]):Promise<void>{
      await this.entity.updateMany(data);

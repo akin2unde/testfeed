@@ -7,7 +7,7 @@ import { AsyncLocalStorage } from 'async_hooks';
 
 @Injectable()
 export class UserService extends BaseService<User> {
- constructor(@InjectModel(User.name) readonly _entity:Model<User>,private readonly _store: AsyncLocalStorage<User>) 
+ constructor(@InjectModel( 'User') readonly _entity:Model<User>,private readonly _store: AsyncLocalStorage<User>) 
  {
   super(_entity,_store);
  }

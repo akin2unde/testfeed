@@ -7,7 +7,7 @@ import { User } from 'src/models/db/user';
 import { TaskPointConfig } from 'src/models/db/task-point-config';
 @Injectable()
 export class TaskPointConfigService extends BaseService<TaskPointConfig> {
- constructor(@InjectModel(TaskPointConfig.name) readonly _entity:Model<TaskPointConfig>,private readonly _store: AsyncLocalStorage<User>) 
+ constructor(@InjectModel( 'TaskPointConfig') readonly _entity:Model<TaskPointConfig>,private readonly _store: AsyncLocalStorage<User>) 
  {
   super(_entity,_store);
  }

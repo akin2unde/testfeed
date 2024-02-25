@@ -10,7 +10,7 @@ import { Feature } from 'src/models/db/feature';
 
 @Injectable()
 export class FeatureService extends BaseService<Feature> {
- constructor(@InjectModel(Feature.name) readonly _entity:Model<Feature>,private readonly _store: AsyncLocalStorage<User>) 
+ constructor(@InjectModel( 'Feature') readonly _entity:Model<Feature>,private readonly _store: AsyncLocalStorage<User>) 
  {
   super(_entity,_store);
  }

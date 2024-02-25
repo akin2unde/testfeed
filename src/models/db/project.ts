@@ -5,10 +5,16 @@ import { Document } from "mongoose";
 import { Exclude, plainToInstance } from "class-transformer";
 import { Status } from "./status";
 import { ProjectType } from "./project-type";
+import { setCodePrefix } from "../operation/attributes";
 
-@Schema({collection:'Project',timestamps:true
+@Schema({collection:'Project',timestamps:true,_id:false
 })
+@setCodePrefix('PRJ')
+
 export class Project extends BaseEntity<Project>  {
+   constructor() {
+      super();
+   }
    @Prop({isRequired:true, unique:true,index:true,trim:true})
    name: string;
    @Prop({isRequired:true})
@@ -27,4 +33,4 @@ export class Project extends BaseEntity<Project>  {
 export type ProjectDocument = Project & Document;
 export const ProjectSchema = SchemaFactory.createForClass(Project);
 ProjectSchema.index({position: '2dsphere' });
-ProjectSchema.index({ '$**': 'text' });
+ProjectSchema.index({ '$**': 'text',code: 1 }, { unique: true });

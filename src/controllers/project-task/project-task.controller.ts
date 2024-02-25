@@ -1,6 +1,7 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res, UsePipes } from '@nestjs/common';
 import { Task } from 'src/models/db/Task';
-import { ProjectTask } from 'src/models/db/project-task';
+import { ProjectTask, ProjectTaskDTO } from 'src/models/db/project-task';
+import { ModelValidation } from 'src/pipes/model-validation';
 import { ProjectTaskService } from 'src/services/project-task.service';
 
 @Controller('project-task')
@@ -17,10 +18,11 @@ export class ProjectTaskController {
      }
     } 
     @Post('save')
-    async saveUser(@Body() data: ProjectTask): Promise<ProjectTask> {
+    @UsePipes(new ModelValidation(ProjectTaskDTO,false))
+    async saveUser(@Body() data: ProjectTaskDTO): Promise<ProjectTaskDTO> {
     try {
         var result= await this.service.preSave(data)
-        return result[0];
+        return result;
      } catch (err) {
         throw err;
      }

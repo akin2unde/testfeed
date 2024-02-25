@@ -28,8 +28,8 @@ export class AuthorizeMiddleware implements NestMiddleware {
           try{
             var user = await this.jwtService.verifyAsync(token);
             //check if user exist
-            const globalUser=new TokenUser(user.mailAddress,user.tenant,user._id);
-            var found= await this.userService.getOneById(globalUser._id);
+            const globalUser=new TokenUser(user.mailAddress,user.code);
+            var found= await this.userService.getOne({code:globalUser.code});
             if(found)
             {
               this.als.run(globalUser, () => {next()});
