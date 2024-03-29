@@ -7,10 +7,10 @@ import { Status } from "./status";
 import { FeaturePriority } from "./feature-priority";
 import { setCodePrefix } from "../operation/attributes";
 
-@Schema({collection:'Feature',timestamps:true,_id:false
+@Schema({collection:'Request',timestamps:true,_id:false
 })
-@setCodePrefix('FET')
-export class Feature extends BaseEntity<Feature>  {
+@setCodePrefix('REQ')
+export class Request extends BaseEntity<Request>  {
    /**
     *
     */
@@ -30,20 +30,22 @@ export class Feature extends BaseEntity<Feature>  {
    @Prop({isRequired:true,trim:true})
    @IsNotEmpty()
    description: string;
-   
+   @Prop()
+   solution: string;
+   @Prop()
+   task: string;
    toObject()
    {
-      return plainToInstance(Feature,{...this['_doc'],id:this['id']})
+      return plainToInstance(Request,{...this['_doc'],id:this['id']})
    }
 }
-export class FeatureDTO extends Feature{
+export class RequestDTO extends Request{
    constructor() {
       super();
    }
 }
-export type FeatureDocument = Feature & Document;
-export const FeatureSchema = SchemaFactory.createForClass(Feature);
-FeatureSchema.index({position: '2dsphere' });
-FeatureSchema.index({project: 1,description:1 }, { unique: true });
-
-FeatureSchema.index({ '$**': 'text'} );
+export type RequestDocument = Request & Document;
+export const RequestSchema = SchemaFactory.createForClass(Request);
+RequestSchema.index({position: '2dsphere' });
+RequestSchema.index({project: 1,description:1}, { unique: true });
+RequestSchema.index({ '$**': 'text'} );

@@ -25,6 +25,7 @@ async function bootstrap() {
   //   transformOptions: {
   //     enableImplicitConversion: true,
   //   }, }));
+  app.enableCors();
   app.use(logger);
   app.useGlobalFilters(new ErrorHandler());
   await app.listen(8000);

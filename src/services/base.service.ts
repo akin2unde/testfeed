@@ -26,7 +26,18 @@ export abstract class BaseService<T> {
     this.activeUser= this.store?this.store.getStore():null;
     return this.activeUser
   }
-
+  async getAll(skip=0,limit=20):Promise<T[]>{
+    return await this.entity.find();
+  }
+  async count(conditions:FilterQuery<T>):Promise<number>{
+    return await this.entity.countDocuments(conditions as FilterQuery<T>);
+  }
+  async get(conditions:FilterQuery<T>,projection:string|Record<string,unknown>={},options:Record<string,unknown>={}):Promise<T[]>{
+    return await this.entity.find(conditions as FilterQuery<T>,projection,options);
+  }
+  async getSimple(conditions:Partial<Record<keyof T,unknown>>,projection:string|Record<string,unknown>={},options:Record<string,unknown>={}):Promise<T[]>{
+    return await this.entity.find(conditions as FilterQuery<T>,projection,options);
+  }
   async getOne(conditions:Partial<Record<keyof T,unknown>>,projection:string|Record<string,unknown>={},options:Record<string,unknown>={}):Promise<T>{
     return await this.entity.findOne(conditions as FilterQuery<T>,projection,options);
   }

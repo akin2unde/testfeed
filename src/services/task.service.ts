@@ -10,6 +10,7 @@ import { TaskHistory } from 'src/models/db/task-history';
 import { ObjectState } from 'src/models/operation/object-state';
 import { TaskStatus } from 'src/models/db/task-status';
 import { TaskHistoryService } from './task-history.service';
+import { TaskType } from 'src/models/db/task-type';
 
 @Injectable()
 export class TaskService extends BaseService<Task> {
@@ -43,12 +44,6 @@ export class TaskService extends BaseService<Task> {
    await this.taskHistoryService.saveMany(histories);
    return res;
  }
-  // setCode(data: Task[]): void
-  // {
-  //   data.forEach(f=>{
-  //     (f as any).code=`${(f as any).codePrefix}-${this.generate6DigitCode()}`;
-  //     console.log(f);
-  //   });
-  // }
+ 
 
 }

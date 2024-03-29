@@ -11,4 +11,5 @@ export class UserService extends BaseService<User> {
  {
   super(_entity,_store);
  }
+
 }

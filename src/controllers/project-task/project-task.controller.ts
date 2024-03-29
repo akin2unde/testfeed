@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Res, UsePipes } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Res, UsePipes } from '@nestjs/common';
 import { Task } from 'src/models/db/Task';
 import { ProjectTask, ProjectTaskDTO } from 'src/models/db/project-task';
 import { ModelValidation } from 'src/pipes/model-validation';
@@ -25,6 +25,15 @@ export class ProjectTaskController {
         return result;
      } catch (err) {
         throw err;
+     }
+    }
+    @Get('getUserTaskSummary/:email')
+    async getUserTaskSummary(@Param() email): Promise<KeyValue[]> {
+    try {
+        const result= await this.service.getUserTaskSummary(email)
+        return result;
+      } catch (err) {
+         throw err;
      }
     }
 }

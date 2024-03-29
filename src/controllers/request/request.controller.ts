@@ -1,11 +1,11 @@
 import { Controller, Res,Get, HttpStatus, Post, Body, UsePipes } from '@nestjs/common';
-import { Feature, FeatureDTO } from 'src/models/db/feature';
+import { RequestDTO } from 'src/models/db/request';
 import { ModelValidation } from 'src/pipes/model-validation';
-import { FeatureService } from 'src/services/feature.service';
+import { RequestService } from 'src/services/request.service';
 
 @Controller('feature')
-export class FeatureController {
-    constructor(private service:FeatureService) {
+export class RequestController {
+    constructor(private service:RequestService) {
         
     }
     @Get('test')
@@ -17,8 +17,8 @@ export class FeatureController {
      }
     }
     @Post('save')
-    @UsePipes(new ModelValidation(FeatureDTO))
-    async saveUser(@Body() data: FeatureDTO[]): Promise<FeatureDTO[]> {
+    @UsePipes(new ModelValidation(RequestDTO))
+    async saveUser(@Body() data: RequestDTO[]): Promise<RequestDTO[]> {
     try {
         var result= await this.service.saveMany(data)
         return result;
@@ -27,7 +27,7 @@ export class FeatureController {
      }
     } 
     @Get('getAll')
-    async getAll(@Res() response): Promise<FeatureDTO[]> {
+    async getAll(@Res() response): Promise<RequestDTO[]> {
     try {
         const result= await this.service.getAll();
         return response.status(HttpStatus.OK).json(result);
