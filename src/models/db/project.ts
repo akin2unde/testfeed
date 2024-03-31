@@ -6,6 +6,7 @@ import { Exclude, Transform, plainToInstance } from "class-transformer";
 import { Status } from "./status";
 import { ProjectType } from "./project-type";
 import { setCodePrefix } from "../operation/attributes";
+import { ObjectState } from "../operation/object-state";
 
 @Schema({collection:'Project',timestamps:true,_id:false
 })
@@ -34,7 +35,7 @@ export class Project extends BaseEntity<Project>  {
    }
 }
 export class ProjectDTO extends Project  {
-  
+  state: ObjectState= ObjectState.unchanged;
 }
 export type ProjectDocument = Project & Document;
 export const ProjectSchema = SchemaFactory.createForClass(Project);

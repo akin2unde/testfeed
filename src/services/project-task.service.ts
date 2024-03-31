@@ -43,7 +43,7 @@ export class ProjectTaskService extends BaseService<ProjectTask> {
   });
   const bugTasks= { key:"Bug", value:tasks.filter(_=>_.taskType== TaskType.bug.toString()).length.toString(),other:'red'} as KeyValue
   const pendingTasks= { key:"Pending", value:tasks.filter(_=>_.currentStatus== TaskStatus.pending.toString()).length.toString(),other:'pink'} as KeyValue
-  const completed= { key:"Completed", value:tasks.filter(_=>_.currentStatus== TaskStatus.completed.toString()).length.toString(),other:'green'} as KeyValue
+  const completed= { key:"Completed", value:tasks.filter(_=>_.currentStatus== TaskStatus.completed.toString()).length.toString(),other:'primary'} as KeyValue
   const awaiting= { key:"Awaiting", value:tasks.filter(_=>_.currentStatus== TaskStatus.pendingreview.toString()).length.toString(),other:'orange'} as KeyValue
   const projectCount= (await this.taskService._entity.aggregate().sortByCount('project')).length;
   const project = {key:'Projects', value:projectCount.toString(),other:'blue'} as KeyValue;

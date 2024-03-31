@@ -27,7 +27,7 @@ export abstract class BaseService<T> {
     return this.activeUser
   }
   async getAll(skip=0,limit=20):Promise<T[]>{
-    return await this.entity.find();
+    return await this.entity.find().skip(skip).limit(limit);
   }
   async count(conditions:FilterQuery<T>):Promise<number>{
     return await this.entity.countDocuments(conditions as FilterQuery<T>);

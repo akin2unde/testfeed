@@ -17,6 +17,15 @@ export class ProjectController {
       return response.status(err.status).json(err.response);
      }
     } 
+    @Get('getAll/:skip/:limit')
+    async getAll(skip:number,limit:number): Promise<ProjectDTO[]> {
+    try {
+        const result=await this.service.getAll(skip,limit) as ProjectDTO[];
+        return result;
+      } catch (err) {
+         throw err;;
+     }
+    }
 
     @Post('save')
     @UsePipes(new ModelValidation(Project))

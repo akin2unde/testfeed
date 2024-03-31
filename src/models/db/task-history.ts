@@ -29,7 +29,7 @@ export class TaskHistory extends BaseEntity<TaskHistory>  {
    }
 }
 export class TaskHistoryDTO extends TaskHistory  {
-   taskObj:TaskDTO;
+   taskObj?:TaskDTO;
 }
 export type TaskHistoryDocument = TaskHistory & Document;
 export const TaskHistorySchema = SchemaFactory.createForClass(TaskHistory);
