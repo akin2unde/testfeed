@@ -20,7 +20,7 @@ export class RequestController {
     @UsePipes(new ModelValidation(RequestDTO))
     async saveUser(@Body() data: RequestDTO[]): Promise<RequestDTO[]> {
     try {
-        var result= await this.service.saveMany(data)
+        var result= await this.service.save(data)
         return result;
      } catch (err) {
         throw err;

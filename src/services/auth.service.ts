@@ -32,7 +32,7 @@ export class AuthService  {
     return user;  
  }
  async saveUser(data:UserDTO[]){
-   var user= await this.servive.saveMany(data) as UserDTO[]
+   var user= await this.servive.save(data) as UserDTO[]
    user[0].token=await this.jwtService.signAsync({mailAddress: user[0].mailAddress,code: user[0].code.toString()})
    return user;
  }

@@ -20,7 +20,7 @@ export class FeatureController {
     @UsePipes(new ModelValidation(FeatureDTO))
     async saveUser(@Body() data: FeatureDTO[]): Promise<FeatureDTO[]> {
     try {
-        var result= await this.service.saveMany(data)
+        var result= await this.service.save(data)
         return result;
      } catch (err) {
         throw err;

@@ -18,10 +18,10 @@ export class ProjectController {
      }
     } 
     @Get('getAll/:skip/:limit')
-    async getAll(skip:number,limit:number): Promise<ProjectDTO[]> {
+    async getAll(@Res() response,skip:number,limit:number): Promise<Project[]> {
     try {
-        const result=await this.service.getAll(skip,limit) as ProjectDTO[];
-        return result;
+        const result=await this.service.getAll(skip,limit);
+        return response.json(result);
       } catch (err) {
          throw err;;
      }
@@ -31,7 +31,7 @@ export class ProjectController {
     @UsePipes(new ModelValidation(Project))
     async saveUser(@Body() data: ProjectDTO[]): Promise<ProjectDTO[]> {
     try {
-        var result= await this.service.saveMany(data)
+        var result= await this.service.save(data)
         return result;
      } catch (err) {
         throw err;

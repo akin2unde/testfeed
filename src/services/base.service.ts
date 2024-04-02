@@ -2,7 +2,7 @@ import { HttpCode, HttpException, Injectable } from '@nestjs/common';
 import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { AsyncLocalStorage } from 'async_hooks';
 import {  } from 'class-transformer';
-import { Document, FilterQuery, Model } from 'mongoose';
+import { Document, FilterQuery, FlattenMaps, Model } from 'mongoose';
 import { ErrorHandler } from 'src/middleware/error';
 import { BaseEntity } from 'src/models/db/base-model';
 import { User } from 'src/models/db/user';
@@ -21,30 +21,53 @@ export abstract class BaseService<T> {
   /**
    *
    */
+ private docToObj(docs:T[])
+ {
+   const result = docs.map((m:any)=>
+   { 
+    const obj=m.toJSON ===undefined?m: m.toJSON();
+    delete obj.__v; 
+    obj.state=ObjectState.unchanged; return obj
+  });
+   return result;
+ }
   getActiveUser()
   {
     this.activeUser= this.store?this.store.getStore():null;
     return this.activeUser
   }
   async getAll(skip=0,limit=20):Promise<T[]>{
-    return await this.entity.find().skip(skip).limit(limit);
+    var result= await this.entity.find().skip(skip).limit(limit);
+    result= this.docToObj(result);
+    return result
   }
   async count(conditions:FilterQuery<T>):Promise<number>{
     return await this.entity.countDocuments(conditions as FilterQuery<T>);
   }
   async get(conditions:FilterQuery<T>,projection:string|Record<string,unknown>={},options:Record<string,unknown>={}):Promise<T[]>{
-    return await this.entity.find(conditions as FilterQuery<T>,projection,options);
+    var result= await this.entity.find(conditions as FilterQuery<T>,projection,options);
+    result= this.docToObj(result);
+    return result;
   }
   async getSimple(conditions:Partial<Record<keyof T,unknown>>,projection:string|Record<string,unknown>={},options:Record<string,unknown>={}):Promise<T[]>{
     return await this.entity.find(conditions as FilterQuery<T>,projection,options);
   }
   async getOne(conditions:Partial<Record<keyof T,unknown>>,projection:string|Record<string,unknown>={},options:Record<string,unknown>={}):Promise<T>{
-    return await this.entity.findOne(conditions as FilterQuery<T>,projection,options);
+    var result= await this.entity.findOne(conditions as FilterQuery<T>,projection,options);
+    const objToJson= (result as any).toJSON() ;
+    objToJson.state=ObjectState.unchanged;
+    delete objToJson.__v;  
+    return objToJson;
   }
-  async getOneById(id:string,projection:string|Record<string,unknown>={},options:Record<string,unknown>={}):Promise<T>{
-    return await this.entity.findById(id);
+  async getOneById(id:string):Promise<T>
+  {
+    var result= await this.entity.findById(id);
+    const objToJson= (result as any).toJSON() ;
+    objToJson.state=ObjectState.unchanged;
+    delete objToJson.__v;  
+    return objToJson;
   }
-  private async save(data:T[])
+   async save(data:T[])
   {
     const newObjs=(data as any[]).filter(_=>_.state== ObjectState.new || !_.state);
     const updateObjs=(data as any[]).filter(_=>_.state && _.state== ObjectState.changed);
@@ -55,14 +78,16 @@ export abstract class BaseService<T> {
     if(deleteObjs.length>0)
     await this.deleteMany(deleteObjs);
     const res= saveRes.concat(updateObjs).concat(deleteObjs);
-    return res.map((m:any)=>{m.state=ObjectState.unchanged; return  m.toObject()});
+    var result= this.docToObj(res);
+    return result;
   }
 
-  async saveMany(data:T[]):Promise<T[]>
+  private async saveMany(data:T[]):Promise<T[]>
   {
     this.setCode(data);
     try{
-    return await this.entity.insertMany(data);
+    var result= await this.entity.insertMany(data,{ lean: true });
+    return result;
     }
     catch(err)
     {
@@ -81,9 +106,15 @@ export abstract class BaseService<T> {
    return Math.floor(1000000000 + Math.random() * 9000000000);
   }
   async updateMany(data:T[]):Promise<void>{
-     await this.entity.updateMany(data);
+    for (let index = 0; index < data.length; index++) {
+      const el= data[index];
+      var res=await this.entity.replaceOne({code:(el as any).code},el);
+    }
   }
   async deleteMany(data:T[]):Promise<void>{
-    await this.entity.deleteMany(data);
- }
+    for (let index = 0; index < data.length; index++) {
+      const el= data[index];
+      this.entity.deleteOne({code:(el as any).code},el);
+    }
+   }
 }

@@ -23,7 +23,7 @@ export class ProjectTaskService extends BaseService<ProjectTask> {
  {
   const savedTasks= await this.taskService.preSave(data.taskObjs);
   data.tasks=savedTasks.map(m=>{return m.code});
-  const res= await this.saveMany([data]);
+  const res= await this.save([data]);
   return {...data,state:ObjectState.unchanged};
  }
  async getUserTaskSummary(email:string):Promise<KeyValue[]>

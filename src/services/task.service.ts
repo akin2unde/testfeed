@@ -23,7 +23,7 @@ export class TaskService extends BaseService<Task> {
  async preSave(data:TaskDTO[])
  {
    const histories:TaskHistory[]=[];
-   const res= await this.saveMany(data);
+   const res= await this.save(data);
     res.forEach(f=>{
       if(f.state!= ObjectState.unchanged)
       {
@@ -41,7 +41,7 @@ export class TaskService extends BaseService<Task> {
         f.hasHistory=true;
       }
    });
-   await this.taskHistoryService.saveMany(histories);
+   await this.taskHistoryService.save(histories);
    return res;
  }
  

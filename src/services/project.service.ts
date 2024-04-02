@@ -12,4 +12,11 @@ export class ProjectService extends BaseService<Project> {
  {
   super(_entity,_store);
  }
+ async save(data: Project[]): Promise<any[]>
+ {
+    data.forEach(_=>{
+        _.createdBy= this.getActiveUser().mailAddress;
+    });
+    return await super.save(data);
+ }
 }
