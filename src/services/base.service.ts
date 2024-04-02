@@ -36,16 +36,23 @@ export abstract class BaseService<T> {
     this.activeUser= this.store?this.store.getStore():null;
     return this.activeUser
   }
-  async getAll(skip=0,limit=20):Promise<T[]>{
-    var result= await this.entity.find().skip(skip).limit(limit);
+  async getAll(skip=0,limit=20,sortParam:string="createdAt",sortOrder:string|number='desc'):Promise<T[]>{
+    const sortO= sortOrder=='desc'?-1:1;
+    var result= await this.entity.find().sort({sortParam:sortO}).skip(skip).limit(limit);
     result= this.docToObj(result);
     return result
   }
   async count(conditions:FilterQuery<T>):Promise<number>{
-    return await this.entity.countDocuments(conditions as FilterQuery<T>);
+    const res=  await this.entity.countDocuments(conditions as FilterQuery<T>);
+    return res[0].countResult;
   }
-  async get(conditions:FilterQuery<T>,projection:string|Record<string,unknown>={},options:Record<string,unknown>={}):Promise<T[]>{
-    var result= await this.entity.find(conditions as FilterQuery<T>,projection,options);
+  async countWithPaging(conditions:FilterQuery<T>,skip:number=0,limit:number=20):Promise<number>{
+    const res=  await this.entity.aggregate([{$match:conditions},{$skip:skip},{$limit:limit},{$count:'countResult'}]);  //.countDocuments(conditions as FilterQuery<T>);
+    return res[0].countResult;
+  }
+  async get(conditions:FilterQuery<T>,skip=0,limit=20,sortParam:string="createdAt",sortOrder:string|number='desc', projection:string|Record<string,unknown>={},options:Record<string,unknown>={}):Promise<T[]>{
+    const sortO= sortOrder=='desc'?-1:1;
+    var result= await this.entity.find(conditions as FilterQuery<T>,projection,options).sort({sortParam:sortO}).skip(skip).limit(limit);
     result= this.docToObj(result);
     return result;
   }
