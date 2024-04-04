@@ -17,10 +17,10 @@ export class ProjectController {
       return response.status(err.status).json(err.response);
      }
     } 
-    @Get('getAll/:skip/:limit')
-    async getAll(@Res() response,skip:number,limit:number): Promise<Project[]> {
+    @Get('getAll/:skip/:limit/:sortParam?/:sortOrder?')
+    async getAll(@Res() response,skip:number,limit:number,sortParam:string,sortOrder:string): Promise<Project[]> {
     try {
-        const result=await this.service.getAll(skip,limit);
+        const result=await this.service.getAll(skip,limit,sortParam,sortOrder);
         return response.json(result);
       } catch (err) {
          throw err;;

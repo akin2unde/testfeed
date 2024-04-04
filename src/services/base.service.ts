@@ -36,7 +36,7 @@ export abstract class BaseService<T> {
     this.activeUser= this.store?this.store.getStore():null;
     return this.activeUser
   }
-  async getAll(skip=0,limit=20,sortParam:string="createdAt",sortOrder:string|number='desc'):Promise<T[]>{
+  async getAll(skip=0,limit=20,sortParam:string="createdAt",sortOrder:string='desc'):Promise<T[]>{
     const sortO= sortOrder=='desc'?-1:1;
     var result= await this.entity.find().sort({sortParam:sortO}).skip(skip).limit(limit);
     result= this.docToObj(result);
