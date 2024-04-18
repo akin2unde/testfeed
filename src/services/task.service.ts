@@ -22,28 +22,33 @@ export class TaskService extends BaseService<Task> {
  }
  async preSave(data:TaskDTO[])
  {
-   const histories:TaskHistory[]=[];
-   const res= await this.save(data);
-    res.forEach(f=>{
-      if(f.state!= ObjectState.unchanged)
-      {
-        let history= new  TaskHistory();
-        history.actor= this.getActiveUser().mailAddress;
-        history.state= ObjectState.new;
-        history.task= f.code;
-        history.taskStatus
-        history.taskStatus= f.currentStatus;
-        history.description=`Task is now ${f.currentStatus} by ${history.actor}`;
-        histories.push(history);
-      }
-      if(f.currentStatus!= TaskStatus.pending)
-      {
-        f.hasHistory=true;
-      }
+   await this.updateHistory(data);
+   const res= await this.save(data) as TaskDTO[];
+   res.forEach(_=>{
+    _.previousStatus= _.currentStatus;
    });
-   await this.taskHistoryService.save(histories);
    return res;
  }
- 
-
+ async updateHistory(data:TaskDTO[])
+ {
+  const histories:TaskHistory[]=[];
+  data.forEach(f=>{
+    if(f.state== ObjectState.changed && f.currentStatus!=f.previousStatus)
+    {
+      let history= new  TaskHistory();
+      history.actor= this.getActiveUser().mailAddress;
+      history.state= ObjectState.new;
+      history.task= f.code;
+      history.taskStatus
+      history.taskStatus= f.currentStatus;
+      history.description=`Task is now ${f.currentStatus} by ${history.actor}`;
+      histories.push(history);
+    }
+    if(f.currentStatus!= TaskStatus.pending)
+    {
+      f.hasHistory=true;
+    }
+ });
+  await this.taskHistoryService.save(histories);
+ }
 }

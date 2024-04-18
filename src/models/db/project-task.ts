@@ -28,6 +28,8 @@ export class ProjectTask extends BaseEntity<ProjectTask>{
    @Prop({default:TaskStatus.pending,enum:TaskStatus,type:String})
    status: TaskStatus;
    @Prop()
+   isAcknowledge: boolean;
+   @Prop()
    closeBy: string;
    @Prop({isRequired:true})
    description: string;
@@ -39,7 +41,7 @@ export class ProjectTask extends BaseEntity<ProjectTask>{
 export class ProjectTaskDTO extends ProjectTask{
    @ValidateNested({ each: true })
    @Type(() => TaskDTO)
-   taskObjs: Task[]=[];
+   taskObjs: TaskDTO[]=[];
    /**
     *
     */

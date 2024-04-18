@@ -18,7 +18,7 @@ export class TaskController {
     @Get('getAll/:skip/:limit')
     async getAll(skip:number,limit:number): Promise<TaskDTO[]> {
     try {
-        const result= this.service.getAll(skip,limit);
+        const result= await this.service.getAll(skip,limit) as TaskDTO[];
         return result;
       } catch (err) {
          throw err;;
@@ -27,10 +27,11 @@ export class TaskController {
     @Post('save')
     async saveUser(@Body() data: Task[]): Promise<Task[]> {
     try {
-        var result= await this.service.preSave(data)
+        var result= await this.service.save(data)
       return result;
      } catch (err) {
         throw err;
      }
     }
+    
 }

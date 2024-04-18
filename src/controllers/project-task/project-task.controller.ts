@@ -21,14 +21,32 @@ export class ProjectTaskController {
     @UsePipes(new ModelValidation(ProjectTaskDTO,false))
     async saveUser(@Body() data: ProjectTaskDTO): Promise<ProjectTaskDTO> {
     try {
-        var result= await this.service.preSave(data)
+        var result= await this.service.preSave(data) as ProjectTaskDTO
         return result;
      } catch (err) {
         throw err;
      }
     }
+    @Get('getByCode/:code')
+    async getByCode(@Res() response,@Param('code') code:string): Promise<ProjectTaskDTO[]> {
+    try {
+        const result=await this.service.getByCode(code);
+        return response.json(result);
+      } catch (err) {
+         throw err;
+     }
+    }
+    @Get('getAll/:skip/:limit/:sortParam?/:sortOrder?')
+    async getAll(@Res() response,@Param() skip:number,@Param() limit:number,@Param() sortParam:string,@Param() sortOrder:string): Promise<ProjectTaskDTO[]> {
+    try {
+        const result=await this.service.getAll(skip,limit,sortParam,sortOrder);
+        return response.json(result);
+      } catch (err) {
+         throw err;;
+     }
+    }
     @Get('getUserTaskSummary/:email')
-    async getUserTaskSummary(@Param() email): Promise<KeyValue[]> {
+    async getUserTaskSummary(@Param('email') email:string): Promise<KeyValue[]> {
     try {
         const result= await this.service.getUserTaskSummary(email)
         return result;

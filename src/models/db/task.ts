@@ -28,15 +28,13 @@ export class Task extends BaseEntity<Task>  {
    @Prop({isRequired:true})
    @IsEmail()
    actor: string;
-   @Prop({})
-   @IsEmail()
+   @Prop()
    createdBy:string
    @Prop({default:ProjectType.frontend, enum:ProjectType,type:String})
    projectType: string;
    @Prop({default:TaskStatus.pending, enum:TaskStatus,type:String})
    currentStatus: TaskStatus;
    @Prop()
-   @IsEmail()
    closeBy:string;
    @Type(() => Date)
    startAt:Date;
@@ -62,7 +60,7 @@ export class Task extends BaseEntity<Task>  {
    }
 }
 export class TaskDTO extends Task  {
-
+   previousStatus:TaskStatus;
 }
 export type TaskDocument = Task & Document;
 export const TaskSchema = SchemaFactory.createForClass(Task);

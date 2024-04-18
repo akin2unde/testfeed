@@ -1,4 +1,4 @@
-import { ArgumentMetadata, Body, Controller, Get, HttpStatus, Post, Res, UsePipes } from '@nestjs/common';
+import { ArgumentMetadata, Body, Controller, Get, HttpStatus, Param, Post, Res, UsePipes } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import envConfig from 'src/environment/env-config';
 import { User, UserDTO } from 'src/models/db/user';
@@ -12,13 +12,14 @@ export class AuthController {
     constructor(private service:AuthService,private configService: ConfigService) {
         
     }
-    @Get('test')
-    async test(@Res() response): Promise<void> {
+  
+    @Get('getAll/:skip/:limit/:sortParam?/:sortOrder?')
+    async getAll(@Res() response,@Param('skip') skip:number,@Param('limit') limit:number,@Param('sortParam') sortParam:string,@Param('sortOrder') sortOrder:string): Promise<UserDTO[]> {
     try {
-       const result=await this.service.getAll();
-      return response.status(HttpStatus.OK).json(result);
-     } catch (err) {
-      return response.status(err.status).json(err.response);
+        const result=await this.service.getAllUser(skip,limit,sortParam,sortOrder);
+        return response.json(result);
+      } catch (err) {
+         throw err;;
      }
     }
     @Post('login')

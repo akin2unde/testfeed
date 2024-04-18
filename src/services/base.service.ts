@@ -74,7 +74,7 @@ export abstract class BaseService<T> {
     delete objToJson.__v;  
     return objToJson;
   }
-   async save(data:T[])
+   async save(data:T[]):Promise<T[]>
   {
     const newObjs=(data as any[]).filter(_=>_.state== ObjectState.new || !_.state);
     const updateObjs=(data as any[]).filter(_=>_.state && _.state== ObjectState.changed);

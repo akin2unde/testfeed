@@ -15,9 +15,14 @@ export class AuthService  {
   private readonly servive: UserService ,
   ) {
  }
- async getAll()
- { 
-   this.servive.getOne({mailAddress:'akin2unde@hotmail.com'})
+ async getAllUser(skip:number,limit:number,sortParam:string,sortOrder:string):Promise<User[]>
+ {
+   var res=await this.servive.getAll(skip,limit,sortParam,sortOrder) as UserDTO[];
+   res.forEach(_=>{
+    _.password="";
+   });
+   return res;
+  //  this.servive.getOne({mailAddress:'akin2unde@hotmail.com'})
  }
  async test()
  { 
